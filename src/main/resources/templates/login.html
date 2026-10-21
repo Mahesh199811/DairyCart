@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin sign in | DairyCart</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><div class="page-shell">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="content-page login-page">
+        <section class="checkout-form login-card">
+            <p class="eyebrow">STORE MANAGEMENT</p>
+            <h1 class="page-title">Admin sign in</h1>
+            <p class="login-description">Sign in to manage your DairyCart products.</p>
+            <p class="flash-error" th:if="${param.error}">Those credentials didn't match. Please try again.</p>
+            <p class="flash-success" th:if="${param.logout}">You have signed out.</p>
+            <form th:action="@{/login}" method="post">
+                <label>Username<input name="username" type="text" autocomplete="username" required autofocus></label>
+                <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+                <button class="button button-dark full-button" type="submit">Sign in <span>→</span></button>
+            </form>
+            <a class="continue-link" href="/">← Back to the shop</a>
+        </section>
+    </main>
+    <footer><span>© 2026 DairyCart</span><span>Made fresh, with care <b>✳</b></span></footer>
+</div></body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Store administration | DairyCart</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><div class="page-shell">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="content-page admin-page">
+        <div class="admin-title-row"><div><p class="eyebrow">STORE MANAGEMENT</p><h1 class="page-title">Manage products</h1></div><form th:action="@{/logout}" method="post"><button class="text-link" type="submit">Sign out</button></form></div>
+        <p class="flash-success" th:if="${notice}" th:text="${notice}"></p>
+        <div class="admin-layout">
+            <form class="checkout-form" th:action="@{/admin/products}" method="post" th:object="${productForm}">
+                <h2>Add a product</h2>
+                <label>Product name<input type="text" th:field="*{name}" required maxlength="120"><small class="field-error" th:errors="*{name}"></small></label>
+                <label>Description<textarea th:field="*{description}" rows="3" required maxlength="1000"></textarea><small class="field-error" th:errors="*{description}"></small></label>
+                <div class="admin-fields">
+                    <label>Category<select th:field="*{category}" required><option value="">Choose one</option><option value="Milk">Milk</option><option value="Ghee">Ghee</option><option value="Paneer">Paneer</option><option value="Curd">Curd</option><option value="Butter">Butter</option><option value="Drinks">Drinks</option></select><small class="field-error" th:errors="*{category}"></small></label>
+                    <label>Unit<input type="text" th:field="*{unit}" placeholder="500 g" required maxlength="30"><small class="field-error" th:errors="*{unit}"></small></label>
+                </div>
+                <div class="admin-fields">
+                    <label>Price (₹)<input type="number" th:field="*{price}" min="0.01" step="0.01" required><small class="field-error" th:errors="*{price}"></small></label>
+                    <label>Stock<input type="number" th:field="*{stock}" min="0" max="10000" required><small class="field-error" th:errors="*{stock}"></small></label>
+                </div>
+                <label>Product emoji<input type="text" th:field="*{imageUrl}" placeholder="🥛" required maxlength="10"><small class="field-error" th:errors="*{imageUrl}"></small></label>
+                <button class="button button-dark full-button" type="submit">Add to catalog <span>＋</span></button>
+            </form>
+            <section class="admin-products">
+                <h2>Current products</h2>
+                <div class="admin-product" th:each="product : ${products}">
+                    <span class="admin-product-emoji" th:text="${product.imageUrl}">🥛</span>
+                    <div><strong th:text="${product.name}">Farm Fresh Milk</strong><small th:text="${product.category + ' · ' + product.unit}">Milk · 1 litre</small></div>
+                    <span class="admin-stock" th:text="${product.stock + ' in stock'}">40 in stock</span>
+                </div>
+            </section>
+        </div>
+        <p class="admin-security-note">This page is protected with administrator sign-in. Set a unique password through your environment or managed secret store.</p>
+    </main>
+    <footer><span>© 2026 DairyCart</span><span>Made fresh, with care <b>✳</b></span></footer>
+</div></body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order placed | DairyCart</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><div class="page-shell">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="content-page confirmation-page">
+        <div class="confirmation-mark">✓</div><p class="eyebrow">THANK YOU FOR SHOPPING LOCAL</p>
+        <h1 class="page-title">Your order is in!</h1><p class="confirmation-lead">We’re getting your fresh picks ready. Thanks for making us part of your table.</p>
+        <section class="summary-card order-card">
+            <div class="summary-row"><span>Order reference</span><strong class="order-id" th:text="${order.id}"></strong></div>
+            <div class="summary-row"><span>Placed</span><strong th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, HH:mm')} + ' UTC'"></strong></div>
+            <div class="summary-row"><span>Status</span><span class="status-pill" th:text="${order.status}">PLACED</span></div>
+            <hr>
+            <div class="checkout-item" th:each="item : ${order.items}"><span th:text="${item.productName + ' · ' + item.unit + ' × ' + item.quantity}"></span><strong>₹<span th:text="${#numbers.formatDecimal(item.lineTotal, 1, 'COMMA', 2, 'POINT')}"></span></strong></div>
+            <div class="summary-row total-row"><span>Total</span><strong>₹<span th:text="${#numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></span></strong></div>
+            <p class="delivery-note">Delivering to <strong th:text="${order.customerName}"></strong><br><span th:text="${order.deliveryAddress}"></span></p>
+        </section>
+        <a class="button button-dark" href="/">Back to the shop</a>
+    </main>
+    <footer><span>© 2026 DairyCart</span><span>Made fresh, with care <b>✳</b></span></footer>
+</div></body>
+</html>

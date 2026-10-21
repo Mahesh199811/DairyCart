@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout | DairyCart</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><div class="page-shell">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="content-page">
+        <p class="eyebrow">ALMOST AT YOUR DOOR</p><h1 class="page-title">Checkout</h1>
+        <p class="flash-error" th:if="${error}" th:text="${error}"></p>
+        <div class="checkout-layout">
+            <form class="checkout-form" th:action="@{/checkout}" method="post" th:object="${checkoutForm}">
+                <h2>Where should we deliver?</h2>
+                <label>Your name<input type="text" th:field="*{customerName}" autocomplete="name" required maxlength="100"><small class="field-error" th:errors="*{customerName}"></small></label>
+                <label>Email address<input type="email" th:field="*{email}" autocomplete="email" required maxlength="160"><small class="field-error" th:errors="*{email}"></small></label>
+                <label>Phone number<input type="tel" th:field="*{phone}" autocomplete="tel" required maxlength="30"><small class="field-error" th:errors="*{phone}"></small></label>
+                <label>Delivery address<textarea th:field="*{deliveryAddress}" autocomplete="street-address" rows="3" required maxlength="300"></textarea><small class="field-error" th:errors="*{deliveryAddress}"></small></label>
+                <p class="payment-note"><span>♡</span> This demo places a pay-on-delivery order. No payment details are collected.</p>
+                <button class="button button-dark full-button" type="submit">Place order <span>→</span></button>
+            </form>
+            <aside class="summary-card">
+                <h2>Your basket</h2>
+                <div class="checkout-item" th:each="line : ${lines}"><span th:text="${line.product.name + ' × ' + line.quantity}">Milk × 1</span><strong>₹<span th:text="${#numbers.formatDecimal(line.lineTotal, 1, 'COMMA', 2, 'POINT')}"></span></strong></div>
+                <div class="summary-row total-row"><span>Total</span><strong>₹<span th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}"></span></strong></div>
+            </aside>
+        </div>
+    </main>
+    <footer><span>© 2026 DairyCart</span><span>Made fresh, with care <b>✳</b></span></footer>
+</div></body>
+</html>

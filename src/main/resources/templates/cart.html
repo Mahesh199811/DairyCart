@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your basket | DairyCart</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><div class="page-shell">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="content-page">
+        <p class="eyebrow">YOUR GOODNESS, GATHERED</p><h1 class="page-title">Your basket</h1>
+        <p class="flash-error" th:if="${error}" th:text="${error}"></p>
+        <div class="empty-state" th:if="${lines.isEmpty()}"><span>🧺</span><h2>Your basket is taking a little rest</h2><p>Fill it with fresh favourites from our farm.</p><a class="button button-dark" href="/">Explore the shop</a></div>
+        <div class="cart-layout" th:if="${!lines.isEmpty()}">
+            <form th:action="@{/cart/update}" method="post">
+                <div class="cart-line" th:each="line : ${lines}" th:data-unit-price="${line.product.price}">
+                    <div class="cart-product-icon" th:text="${line.product.imageUrl}">🥛</div>
+                    <div class="cart-product-info"><h2 th:text="${line.product.name}">Milk</h2><p th:text="${line.product.unit}">1 litre</p><strong>₹<span th:text="${#numbers.formatDecimal(line.product.price, 1, 'COMMA', 2, 'POINT')}"></span></strong></div>
+                <label class="quantity-control">Qty <input type="number" min="0" max="20" th:name="${'quantity_' + line.product.id}" th:value="${line.quantity}" aria-label="Quantity"></label>
+                <strong class="line-total">₹<span class="line-total-value" th:text="${#numbers.formatDecimal(line.lineTotal, 1, 'COMMA', 2, 'POINT')}"></span></strong>
+                </div>
+                <button class="text-link update-link" type="submit">Update basket</button>
+            </form>
+            <aside class="summary-card">
+                <h2>Order summary</h2><div class="summary-row"><span>Subtotal</span><strong>₹<span id="cart-subtotal" th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}"></span></strong></div>
+                <div class="summary-row"><span>Delivery</span><span class="muted">Calculated at checkout</span></div>
+                <p class="summary-hint">Delivery charges, if any, will be confirmed by the store.</p>
+                <a class="button button-dark full-button" href="/checkout">Continue to checkout <span>→</span></a>
+                <a class="continue-link" href="/">← Keep shopping</a>
+            </aside>
+        </div>
+    </main>
+    <footer><span>© 2026 DairyCart</span><span>Made fresh, with care <b>✳</b></span></footer>
+    <script th:src="@{/js/cart.js}" defer></script>
+</div></body>
+</html>
